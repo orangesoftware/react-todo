@@ -9,8 +9,8 @@ function TodoList() {
   return (
     <ul>
       {
-        todoList.map((item) => {
-          return <TodoListItem key={item.id} todo={item}/>
+        todoList.map((todo) => {
+          return <TodoListItem key={todo.id} todo={todo}/>
         })
       }
     </ul>
@@ -18,5 +18,3 @@ function TodoList() {
 }
 
 export default TodoList;
-
-
