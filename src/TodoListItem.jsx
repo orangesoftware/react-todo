@@ -1,7 +1,7 @@
 function TodoListItem(props){
-    console.log(props);
+    const {todo} = props;
     return(
-        <li>{props.todo.title}</li>
+        <li>{todo.title}</li>
     )
 }
 
