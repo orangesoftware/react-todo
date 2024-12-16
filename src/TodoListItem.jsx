@@ -1,7 +1,14 @@
 function TodoListItem(props){
-    const {todo} = props;
+    const {todo,onRemoveTodo} = props;
     return(
-        <li>{todo.title}</li>
+        
+        <li>
+            {todo.title}
+            <button 
+            onClick={() => onRemoveTodo(todo.id)}>
+                Remove
+            </button>
+        </li>
     )
 }
 
