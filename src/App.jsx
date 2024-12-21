@@ -3,7 +3,16 @@ import TodoList from './TodoList';
 import AddTodoForm from "./AddTodoForm";
 import { useState, useEffect, Fragment } from 'react';
 
+const [todoList,setTodoList] = useState(
+  JSON.parse(localStorage.getItem("saveTodoList")) || []
+);
 
+useEffect(()=>{
+  localStorage.setItem("saveTodoList",JSON.stringify(todoList));
+  
+},[todoList]);
+
+/*
 const useSemiPersistentState = (()=>{
   const [todoList,setTodoList] = useState(
     JSON.parse(localStorage.getItem("saveTodoList")) || []
@@ -16,10 +25,11 @@ const useSemiPersistentState = (()=>{
 
   return [todoList,setTodoList];
 });
+*/
 
 function App() {
 
-  const [todoList,setTodoList] = useSemiPersistentState();
+  //const [todoList,setTodoList] = useSemiPersistentState();
 
  
 
