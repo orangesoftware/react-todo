@@ -29,7 +29,7 @@ function App() {
       localStorage.setItem("saveTodoList",JSON.stringify(todoList));
     }
     
-  },[todoList]);
+  },[todoList,isLoading]);
 
 
   const addTodo=(newTodo)=>{
