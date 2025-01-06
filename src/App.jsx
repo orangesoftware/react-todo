@@ -3,6 +3,7 @@ import TodoList from './TodoList';
 import AddTodoForm from "./AddTodoForm";
 import { useState, useEffect, Fragment } from 'react';
 
+
 function App() {
   const [todoList,setTodoList] = useState([]);
   const [isLoading,setIsLoading] = useState(true);
@@ -32,33 +33,21 @@ function App() {
 
       //let result = data.records;
       setTodoList(todos);
-      setIsLoading(false);      
     }
     catch(error){
       console.error(error);
+    }
+    finally{
+      setIsLoading(false);
     }
   };
 
   useEffect(()=>{
     fetchData();
-    /*
-     new Promise((resolve,reject)=>{
-      setTimeout(()=>{
-        resolve({
-            data:{
-              todoList:JSON.parse(localStorage.getItem("saveTodoList")) || []
-            }
-          });
-      },2000);
-    }).then((result)=>{
-      setTodoList(result.data.todoList);
-      setIsLoading(false);
-    });
-*/
   },[])
 
   useEffect(()=>{
-    // TODO: check if this is correct
+    // TO.envDO: check if this is correct
     if (!isLoading){    
       localStorage.setItem("saveTodoList",JSON.stringify(todoList));
     }
