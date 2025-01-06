@@ -7,7 +7,41 @@ function App() {
   const [todoList,setTodoList] = useState([]);
   const [isLoading,setIsLoading] = useState(true);
   
+  const fetchData = async () => {
+    setIsLoading(true);
+    let options ={
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`
+      }
+    }
+    let url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+    try{
+      let response = await fetch(url,options);
+      if (!response.ok){
+        throw new Error(`Error ${response.status}`);     
+      }
+      let data = await response.json();
+      let todos = data.records.map((todo)=>{
+        return {
+          id: todo.id,
+          title: todo.fields.title
+        }
+      });
+
+      //let result = data.records;
+      setTodoList(todos);
+      setIsLoading(false);      
+    }
+    catch(error){
+      console.error(error);
+    }
+  };
+
   useEffect(()=>{
+    fetchData();
+    /*
      new Promise((resolve,reject)=>{
       setTimeout(()=>{
         resolve({
@@ -20,7 +54,7 @@ function App() {
       setTodoList(result.data.todoList);
       setIsLoading(false);
     });
-
+*/
   },[])
 
   useEffect(()=>{
