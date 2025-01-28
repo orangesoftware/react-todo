@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import InputWithLabel from './InputWithLabel';
+import style from './AddTodoForm.module.css';
+import { IoAddCircle } from "react-icons/io5";
+import { FaListCheck } from "react-icons/fa6";
 
 const  AddTodoForm=(props)=>{
     const {onAddTodo}=props;
@@ -60,17 +63,24 @@ const  AddTodoForm=(props)=>{
     }
 
     return (
-        <form id="addFormTask" 
-            onSubmit={handleAddTodo}
-        >
-            <InputWithLabel 
-                todoTitle={todoTitle}                 
-                handledTitleChange={handledTitleChange}
+        <div className="card">   
+            <div className='card-header'>                
+                <FaListCheck/> 
+                <span className={style.title}>Add Todo</span>
+                
+            </div>
+            <form id="addFormTask" 
+                onSubmit={handleAddTodo}
             >
-                Title 
-            </InputWithLabel>
-            <button type="submit">Add</button>
-        </form>
+                <InputWithLabel 
+                    todoTitle={todoTitle}                 
+                    handledTitleChange={handledTitleChange}
+                >
+                    <span className={style.addTitle}>Title </span>
+                </InputWithLabel>
+                <button  className={style.buttonAdd} type="submit"><IoAddCircle /> Add</button>
+            </form>
+        </div>
     )
 }
 
