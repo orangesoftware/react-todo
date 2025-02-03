@@ -1,0 +1,45 @@
+ul{
+  list-style-position: inside;
+  padding-left: 0;
+  margin-left: 0;
+  list-style-type: disc;
+  max-height: 200px;
+  overflow-y: auto;
+  border:1px solid rgba(0,0,0, 0.2);
+  box-shadow: 5px 5px 10px -2px rgba(0,0,0,0.2);
+  border-radius: 7px;
+  background-color: white;
+}
+
+.ListItem{
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+  border-bottom:1px solid rgba(0,0,0, 0.2);
+  padding:7px;
+}
+
+.ListItem span{
+  margin-right: 7px;;
+  
+}
+
+
+.btn{
+  border:1px solid rgba(0,0,0, 0.2);
+  padding:5px 10px;
+  --margin:5px 20x;
+  cursor:pointer;
+  font-size:1rem;
+  border-radius: 7px;
+}
+
+.removeItem{  
+  color:red;
+  border:1px solid rgba(0,0,0, 0.2);
+  padding:3px 7px;
+  cursor:pointer;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px -2px rgba(0,0,0,0.2);
+}
