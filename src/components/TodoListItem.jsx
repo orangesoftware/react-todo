@@ -1,8 +1,8 @@
 import style from './TodoListItem.module.css';
 import {IoTrash } from "react-icons/io5";
+import PropTypes from "prop-types";
 
-function TodoListItem(props){
-    const {todo,onRemoveTodo} = props;
+function TodoListItem({todo,onRemoveTodo}){    
     return(
         <li className={style.ListItem}>
             <span>{todo.title}</span>
@@ -13,15 +13,14 @@ function TodoListItem(props){
                 className={style.removeItem}
                 onClick={() => onRemoveTodo(todo.id)}>
             <IoTrash />
-            </a>
-            {/*
-            <button type='button' className={style.btn}
-                onClick={() => onRemoveTodo(todo.id)}>
-                <IoTrash /> Remove
-            </button>
-            */}
+            </a>            
         </li>
     )
+}
+
+TodoListItem.propTypes = {
+    todo: PropTypes.object.isRequired,
+    onRemoveTodo: PropTypes.func.isRequired
 }
 
 export default TodoListItem;

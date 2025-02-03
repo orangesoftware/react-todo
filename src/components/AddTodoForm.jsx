@@ -3,9 +3,10 @@ import InputWithLabel from './InputWithLabel';
 import style from './AddTodoForm.module.css';
 import { IoAddCircle } from "react-icons/io5";
 import { FaListCheck } from "react-icons/fa6";
+import PropTypes from 'prop-types';
 
-const  AddTodoForm=(props)=>{
-    const {onAddTodo}=props;
+
+const  AddTodoForm=({onAddTodo})=>{
     const [todoTitle,setTodoTitle]=useState("");
 
     
@@ -33,14 +34,12 @@ const  AddTodoForm=(props)=>{
 
         let url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
         try{
-            debugger;
             let response = await fetch(url,options);
         if (!response.ok){
             throw new Error(`Error ${response.status}`);     
         }
         let result = await response.json();
 
-      //setTodoList(todo);        
     }
     catch(error){
       console.error(error);
@@ -82,6 +81,9 @@ const  AddTodoForm=(props)=>{
             </form>
         </div>
     )
+}
+AddTodoForm.propTypes={
+    onAddTodo:PropTypes.func.isRequired
 }
 
 export default AddTodoForm;
