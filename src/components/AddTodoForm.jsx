@@ -4,68 +4,57 @@ import style from './AddTodoForm.module.css';
 import { IoAddCircle } from "react-icons/io5";
 import { FaListCheck } from "react-icons/fa6";
 import PropTypes from 'prop-types';
-
+import { post } from '../utils/api';
 
 const  AddTodoForm=({onAddTodo})=>{
+    const ADD_SERVICE = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
     const [todoTitle,setTodoTitle]=useState("");
-
     
     const postData = async () => {
         let title = todoTitle;
         let newRecord = {
-        "records": [
-          {
-            "fields": {
-              "title": `${title}`
-            }
-          }
-        ]
+            "records": [
+                {
+                    "fields": {
+                        "title": `${title}`
+                    }
+                }
+            ]
         }
-
-        
-        let options ={
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`
-            },
-            body: JSON.stringify(newRecord)
-        }
-
-        let url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+       
         try{
-            let response = await fetch(url,options);
+            let response = await post(ADD_SERVICE,newRecord);
         if (!response.ok){
             throw new Error(`Error ${response.status}`);     
         }
         let result = await response.json();
-
+        return result;
     }
     catch(error){
       console.error(error);
+      return null;
     }
   }
-
-
 
     const handledTitleChange=(event)=>{
         const newTodoTitle=event.target.value;       
         setTodoTitle(newTodoTitle);
-
     }
 
-    const handleAddTodo=(event)=>{
+    const handleAddTodo= async(event)=>{
         event.preventDefault();
-        postData();
-        onAddTodo({id:Date.now(),title:todoTitle});
+        let newItem = await postData();
+        if(newItem === null) return;
+        let record = newItem.records[0]; 
         setTodoTitle("");
+        onAddTodo({id:record.id,title:record.fields.title,createdTime:record.createdTime});
     }
 
     return (
         <div className="card">   
             <div className='card-header'>                
                 <FaListCheck/> 
-                <span className={style.title}>Add Todo</span>
+                <span className={style.title}>Todo List</span>
                 
             </div>
             <form id="addFormTask" 

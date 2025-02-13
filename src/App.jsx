@@ -3,36 +3,32 @@ import TodoList from './components/TodoList';
 import AddTodoForm from './components/AddTodoForm';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState, useEffect, Fragment } from 'react';
-
+import {get,deleteReq} from './utils/api';
 
 function App() {
   const [todoList,setTodoList] = useState([]);
   const [isLoading,setIsLoading] = useState(true);
+  const [sortOrder,setSortOrder] = useState({key:"",direction:"none"});
+  const DELETE_SERVICE =`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}/`;
+  const URL_SERVICE = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}?view=Grid%20view&sort[0][field]=title&sort[0][direction]=asc`;
   
   const fetchData = async () => {
-    setIsLoading(true);
-    let options ={
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${import.meta.env.VITE_AIRTABLE_API_TOKEN}`
-      }
-    }
-    let url = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+    setIsLoading(true);    
     try{
-      let response = await fetch(url,options);
+      let response = await get(URL_SERVICE);
       if (!response.ok){
         throw new Error(`Error ${response.status}`);     
       }
       let data = await response.json();
+
       let todos = data.records.map((todo)=>{
         return {
           id: todo.id,
-          title: todo.fields.title
+          title: todo.fields.title,
+          createdTime:todo.createdTime,
         }
       });
 
-      //let result = data.records;
       setTodoList(todos);
     }
     catch(error){
@@ -47,23 +43,47 @@ function App() {
     fetchData();
   },[])
 
-  useEffect(()=>{
-    // TO.envDO: check if this is correct
-    if (!isLoading){    
-      localStorage.setItem("saveTodoList",JSON.stringify(todoList));
-    }
-    
-  },[todoList,isLoading]);
 
-
-  const addTodo=(newTodo)=>{
-    setTodoList([...todoList,newTodo]);
+   const addTodo=(newTodo)=>{    
+    setTodoList(prevTodoList =>[...prevTodoList,newTodo]);    
+    fetchData();
   }
 
-  const removeTodo = (id) => {
-    const newTodoList = todoList.filter((todo) => todo.id !== id);
-   setTodoList(newTodoList);
+  const removeTodo = async (id) => {         
+      try{
+        let response = await deleteReq(`${DELETE_SERVICE}${id}`);
+        // if response is ok, remove the todo from the list state
+        if (response.ok){
+          const newTodoList = todoList.filter((todo) => todo.id !== id);
+          setTodoList(newTodoList);
+        }
+      }
+      catch(error){
+        console.error(error);
+      }
   };
+
+  /*
+    if  a < b return -1
+    if a > b return 1
+    if  a = b return 0
+  */
+  const sortItems = (items, key, direction)=>{
+    return [...items].sort((a,b)=>{      
+      return direction ==="asc"
+        ?a[key].localeCompare(b[key])
+        :b[key].localeCompare(a[key])
+    });
+  }
+
+  useEffect(()=>{
+    if (sortOrder.key){
+      const sortedList = sortItems(todoList,sortOrder.key,sortOrder.direction);
+      setTodoList(sortedList);
+    }
+  },[sortOrder])
+  
+ 
 
   return (
     <Fragment>
@@ -71,9 +91,14 @@ function App() {
       <Routes>
         <Route path="/" element={
           <>
-            <h1>Todo List</h1>
             <AddTodoForm onAddTodo={addTodo} />
-            {isLoading ? (<p>Loading...</p>) : (<TodoList todoList={todoList} onRemoveTodo={removeTodo}/>)}
+            {isLoading ? (<p>Loading...</p>) : (
+              <TodoList 
+                sortOrder={sortOrder}
+                setSortOrder={setSortOrder}                
+                todoList={todoList} 
+                onRemoveTodo={removeTodo}/>
+                )}
           </>          
         } />
         <Route path="/new" element={

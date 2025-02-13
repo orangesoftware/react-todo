@@ -16,6 +16,7 @@ function InputWithLabel({children,todoTitle,handledTitleChange}) {
                 type="text" 
                 name="title" 
                 id="title"
+                autoComplete="off"
                 value = {todoTitle}
                 placeholder="Enter todo title"
                 ref={inputRef}
@@ -27,7 +28,7 @@ function InputWithLabel({children,todoTitle,handledTitleChange}) {
 
 
 InputWithLabel.propTypes = {
-    children: PropTypes.string.isRequired,
+    children: PropTypes.object.isRequired,
     todoTitle: PropTypes.string.isRequired,
     handledTitleChange: PropTypes.func.isRequired
 }
