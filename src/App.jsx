@@ -43,6 +43,7 @@ function App() {
     fetchData();
   },[])
 
+
    const addTodo=(newTodo)=>{    
     setTodoList(prevTodoList =>[...prevTodoList,newTodo]);    
     fetchData();
