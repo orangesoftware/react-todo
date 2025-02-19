@@ -58,18 +58,3 @@
   border-top-right-radius: 7px;
   border-top-left-radius: 7px;
 }
-
-.table{
-  border-collapse: collapse;
-  width: 100%;
-  background-color: white;  
-  border-radius: 7px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-
-.table th, .table td{
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
