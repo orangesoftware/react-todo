@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import TodoList from './TodoList';
 import AddTodoForm from './AddTodoForm';
 import { useState, useEffect} from 'react';
-import {get,deleteReq} from '../utils/api';
+import {get,deleteReq,patch} from '../utils/api';
 
 const TodoContainer = ({tableName}) => {
   const [todoList,setTodoList] = useState([]);
@@ -12,6 +12,7 @@ const TodoContainer = ({tableName}) => {
     const DELETE_SERVICE =`https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${tableName}/`;
     const URL_SERVICE = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_BASE_ID}/${tableName}?view=Grid%20view&sort[0][field]=title&sort[0][direction]=asc`;
     
+    
     const fetchData = async () => {
       setIsLoading(true);    
       try{
@@ -19,12 +20,12 @@ const TodoContainer = ({tableName}) => {
         if (!response.ok){
           throw new Error(`Error ${response.status}`);     
         }
-        let data = await response.json();
-  
+        let data = await response.json();    
         let todos = data.records.map((todo)=>{
           return {
             id: todo.id,
             title: todo.fields.title,
+            status: todo.fields?.status,
             createdTime:todo.createdTime,
           }
         });
@@ -47,7 +48,36 @@ const TodoContainer = ({tableName}) => {
       setTodoList(prevTodoList =>[...prevTodoList,newTodo]);    
       fetchData();
     }
-  
+    
+    const onCheckedTask = async (event,element) => {
+      const status = element.status === "done" ? "pending" : "done";
+      const data = {
+        records: [
+          {
+            id: element.id,
+            fields: {
+              status: status
+            }
+          }
+        ]
+      };
+      // update the todo in the database
+      const response = await patch(`${DELETE_SERVICE}`,data);
+      if (response.ok){
+        const target = event.target;
+        debugger; 
+        if (target.nodeName === "TD"){
+          target.parentElement.classList.toggle("marked");
+        }
+        else if (target.nodeName === "TR"){
+          target.classList.toggle("marked");
+        }
+      }
+      else{
+        alert(`Error ${response.status}`);
+      }
+      
+    };
     const removeTodo = async (id) => {         
         try{
           let response = await deleteReq(`${DELETE_SERVICE}${id}`);
@@ -91,7 +121,8 @@ const TodoContainer = ({tableName}) => {
             sortOrder={sortOrder}
             setSortOrder={setSortOrder}                
             todoList={todoList} 
-            onRemoveTodo={removeTodo}/>
+            onRemoveTodo={removeTodo}
+            onCheckedTask={onCheckedTask}/>
           )}
     </>
   )
