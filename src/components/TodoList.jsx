@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { FaSortDown,FaSortUp  } from "react-icons/fa6";
-import {IoTrash } from "react-icons/io5";
+import TodoListItems from "./TodoListItems";
 import style from './TodoList.module.css';
 
 function TodoList({sortOrder,setSortOrder,todoList,onRemoveTodo}) {  
@@ -21,8 +21,9 @@ function TodoList({sortOrder,setSortOrder,todoList,onRemoveTodo}) {
   }
 
   return (
-    <>    
-      <table className="table">
+    <>  
+      { todoList.length > 0 ?(
+      <table className={style.table}>
         <thead>
           <tr> 
             <th onClick={()=>{
@@ -35,24 +36,9 @@ function TodoList({sortOrder,setSortOrder,todoList,onRemoveTodo}) {
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
-          {todoList.map((element) => (
-            <tr key={element.id}>
-              <td>{element.title}</td>
-              <td>{element.createdTime}</td>
-              <td>
-                <a 
-                  href="#" 
-                  title="Remove item"
-                  className={style.removeItem}
-                  onClick={() => onRemoveTodo(element.id)}>
-                  <IoTrash />
-                </a>                
-              </td>
-            </tr>
-          ))}
-        </tbody>  
+        {TodoListItems({todo:todoList,onRemoveTodo})}        
       </table>   
+      ):(<h3 className={style.noItems}>Todo List is empty.</h3>)}
     </>
   )
 }
