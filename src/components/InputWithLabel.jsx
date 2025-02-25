@@ -16,6 +16,7 @@ function InputWithLabel({children,todoTitle,handledTitleChange}) {
                 type="text" 
                 name="title" 
                 id="title"
+                style = {{padding:"10px","fontSize":"16px","borderRadius":"5px"}}
                 autoComplete="off"
                 value = {todoTitle}
                 placeholder="Enter todo title"
