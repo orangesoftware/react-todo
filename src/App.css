@@ -5,6 +5,12 @@
   text-align: center;
 }
 
+
+
+.card-margin{
+  margin-top: 50px;
+}
+
 .card{
   display: flex;
   flex-direction:column;            

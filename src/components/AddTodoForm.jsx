@@ -55,7 +55,7 @@ const  AddTodoForm=({onAddTodo})=>{
     }
 
     return (
-        <div className="card">   
+        <div className="card card-margin">   
             <div className='card-header'>                
                 <FaListCheck/> 
                 <span className={style.title}>Todo List</span>

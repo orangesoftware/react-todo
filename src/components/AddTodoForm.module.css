@@ -1,7 +1,7 @@
 .addFormTask{
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;    
 }
 
 .addTitle{
@@ -32,3 +32,4 @@
   font-weight: bold;
   padding: 7px;
 }
+
