@@ -1,23 +1,35 @@
+.addFormTask{
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+}
+
 .addTitle{
   font-weight: bold;
   padding: 7px;
 }
 
-.buttonAdd{
+.buttonAdd{    
+  display: inline-block;
   background-color: #4CAF50;
   border: none;
   color: white;
-  padding: 7px 14px;
-  border-radius: 5px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  --font-size: 16px;
-  margin: 4px 7px;
+  padding: 7px 7px;
+  border-radius: 5px;  
+  font-size: 16px;
+  margin: 7px;
   cursor: pointer;
+  width: 100px;  
+}
+
+.addIcon{
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .title{
   font-weight: bold;
   padding: 7px;
 }
+

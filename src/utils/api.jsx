@@ -34,3 +34,13 @@ export const deleteReq = async (url) => {
   const response = await fetch(url, options);
   return response;
 }
+
+export const patch = async (url, data) => {
+  let options = {
+    method: "PATCH",
+    headers: getHeaders(),
+    body: JSON.stringify(data)
+  }
+  const response = await fetch(url, options);
+  return response;
+}

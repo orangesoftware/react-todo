@@ -5,6 +5,12 @@
   text-align: center;
 }
 
+
+
+.card-margin{
+  margin-top: 50px;
+}
+
 .card{
   display: flex;
   flex-direction:column;            
@@ -57,4 +63,16 @@
   gap: 10px;
   border-top-right-radius: 7px;
   border-top-left-radius: 7px;
+}
+
+.tableContainer{
+  height: 400px;
+  overflow: auto;
+  margin-top: 10px;
+  padding: 1px;
+}
+
+.marked{
+  text-decoration: line-through;
+  color: red;
 }

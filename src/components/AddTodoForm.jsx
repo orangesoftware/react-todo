@@ -16,7 +16,8 @@ const  AddTodoForm=({onAddTodo})=>{
             "records": [
                 {
                     "fields": {
-                        "title": `${title}`
+                        "title": `${title}`,
+                        "status": "pending"
                     }
                 }
             ]
@@ -47,17 +48,21 @@ const  AddTodoForm=({onAddTodo})=>{
         if(newItem === null) return;
         let record = newItem.records[0]; 
         setTodoTitle("");
-        onAddTodo({id:record.id,title:record.fields.title,createdTime:record.createdTime});
+        onAddTodo({ id:record.id,
+                    title:record.fields.title,
+                    createdTime:record.createdTime
+                });
     }
 
     return (
-        <div className="card">   
+        <div className="card card-margin">   
             <div className='card-header'>                
                 <FaListCheck/> 
                 <span className={style.title}>Todo List</span>
                 
             </div>
             <form id="addFormTask" 
+                className={style.addFormTask}
                 onSubmit={handleAddTodo}
             >
                 <InputWithLabel 
@@ -66,7 +71,13 @@ const  AddTodoForm=({onAddTodo})=>{
                 >
                     <span className={style.addTitle}>Title </span>
                 </InputWithLabel>
-                <button  className={style.buttonAdd} type="submit"><IoAddCircle /> Add</button>
+                <button  
+                    className={style.buttonAdd} 
+                    type="submit">
+                        <span className={style.addIcon}>
+                        <IoAddCircle size={24} /> Add
+                        </span>                        
+                </button>
             </form>
         </div>
     )

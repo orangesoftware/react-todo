@@ -1,13 +1,17 @@
 import React from 'react'
-import {IoTrash } from "react-icons/io5";
+import {IoTrash,IoPencil } from "react-icons/io5";
 import PropTypes from 'prop-types';
 import style from './TodoListItems.module.css';
 
-const TodoListItems = ({todo,onRemoveTodo}) => {
+const TodoListItems = ({todo,onRemoveTodo,onCheckedTask}) => {
+
   return (            
       <tbody>
         {todo.map((element) => (
-          <tr key={element.id}>
+          
+          <tr className={element?.status === "done" ? "marked" : ""}
+            onClick={(event) => onCheckedTask(event,element)}
+            key={element.id}>
             <td>{element.title}</td>
             <td>{element.createdTime}</td>
             <td>
@@ -15,9 +19,12 @@ const TodoListItems = ({todo,onRemoveTodo}) => {
                 href="#" 
                 title="Remove item"
                 className={style.removeItem}
-                onClick={() => onRemoveTodo(element.id)}>
+                onClick={(event) =>{ 
+                  event.stopPropagation();
+                  onRemoveTodo(element.id)
+                  }}>
                 <IoTrash />
-              </a>                
+              </a>               
             </td>
           </tr>
         ))}
@@ -26,7 +33,8 @@ const TodoListItems = ({todo,onRemoveTodo}) => {
 }
 TodoListItems.propTypes = {
   todo: PropTypes.array.isRequired,
-  onRemoveTodo: PropTypes.func.isRequired
+  onRemoveTodo: PropTypes.func.isRequired,
+  onCheckedTask: PropTypes.func.isRequired
 }
 
 export default TodoListItems
